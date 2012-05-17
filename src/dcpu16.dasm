@@ -3,6 +3,8 @@
     
 :main
 SET A, hello_world_string
+SET X, 5
+SET Y, 4
 JSR printf
 
 SET PC, end
@@ -58,7 +60,15 @@ IFE Z, 0
 
 :printf
     SET B, [video_mem]
-
+    JSR set_position
+    
+    :set_position
+        :position_y
+        MUL Y, 32
+        ADD B, Y
+        :position_x
+        ADD B, X
+        
     :next_char
     SET C, [A]
     IFE C, 0

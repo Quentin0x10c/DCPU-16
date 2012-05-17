@@ -2,20 +2,29 @@
 ; Title:   printf.dasm
 ; Author:  Quentin   
 ; Date:    17/05/2012
-; Version: 0.1
+; Version: 0.2
 ; ----------------------------------------
 ; ChangeLog:
 ; # version 0.1
 ; - Draw the string on display
+; # version 0.2
+; - X, Y position
 ; ----------------------------------------
 ; Todo:
-; - X, Y position
 ; - /n
 ; ----------------------------------------
 
 :printf
     SET B, [video_mem]
-
+    JSR set_position
+    
+    :set_position
+        :position_y
+        MUL Y, 32
+        ADD B, Y
+        :position_x
+        ADD B, X
+        
     :next_char
     SET C, [A]
     IFE C, 0
