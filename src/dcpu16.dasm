@@ -1,23 +1,13 @@
-; ----------------------------------------
-; Title:   hardware.dasm
-; Author:  Quentin   
-; Date:    17/05/2012
-; Version: 0.1
-; ----------------------------------------
-; ChangeLog:
-; # version 0.1
-; - Hardware detection
-; ----------------------------------------
-; Todo:
-; - Display initialization
-; - Keyboard initialization
-; - Clock initialization
-; ----------------------------------------
-
     JSR hw_init
     JSR main
     
 :main
+SET A, hello_world_string
+JSR printf
+
+SET PC, end
+
+:end
 SET PC, end
 
 :hw_init
@@ -47,6 +37,11 @@ IFE Z, 0
         
     :display_init
     SET [display_address], Z
+    
+    SET A, 0
+    SET B, [video_mem]
+    HWI Z
+    
     SET PC, POP
     
     :keyboard_init
@@ -57,8 +52,18 @@ IFE Z, 0
     SET [clock_address], Z
     SET PC, POP
     
-:end
-SET PC, end
+:printf
+    SET B, [video_mem]
+
+    :next_char
+    SET C, [A]
+    IFE C, 0
+        SET PC, POP
+    BOR C, [color]
+    SET [B], C
+    ADD B, 1
+    ADD A, 1
+    SET PC, next_char
 
 :display_address
 DAT 0x0000
@@ -66,3 +71,11 @@ DAT 0x0000
 DAT 0x0000
 :clock_address
 DAT 0x0000
+
+:video_mem
+DAT 0x8000
+:color
+DAT 0xF000
+
+:hello_world_string
+DAT "Hello, World!", 0

@@ -1,0 +1,68 @@
+; ----------------------------------------
+; Title:   hardware.dasm
+; Author:  Quentin   
+; Date:    17/05/2012
+; Version: 0.2
+; ----------------------------------------
+; ChangeLog:
+; # version 0.1
+; - Hardware detection
+; # version 0.2
+; - Display initialization
+; ----------------------------------------
+; Todo:
+; - Keyboard initialization
+; - Clock initialization
+; ----------------------------------------
+
+:hw_init
+HWN Z                                   
+IFE Z, 0                                
+    SET PC, end                         
+                                            
+    :init_hardware_loop                     
+    SUB Z, 1
+    HWQ Z           
+	
+    IFE A, 0xF615
+        IFE B, 0x7349
+            JSR display_init
+			
+    IFE A, 0x7406
+        IFE B, 0x30CF
+            JSR keyboard_init
+		
+    IFE A, 0xB402
+        IFE B, 0x12D0
+            JSR clock_init
+			
+    IFE Z, 0
+        SET PC, POP
+    SET PC, init_hardware_loop
+        
+    :display_init
+    SET [display_address], Z
+    
+    SET A, 0
+    SET B, [video_mem]
+    HWI Z
+    
+    SET PC, POP
+    
+    :keyboard_init
+    SET [keyboard_address], Z
+    SET PC, POP
+    
+    :clock_init
+    SET [clock_address], Z
+    SET PC, POP
+
+:display_address
+DAT 0x0000
+:keyboard_address
+DAT 0x0000
+:clock_address
+DAT 0x0000
+
+:video_mem
+DAT 0x8000
