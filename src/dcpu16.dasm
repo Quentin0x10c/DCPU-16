@@ -42,6 +42,10 @@ IFE Z, 0
     SET B, [video_mem]
     HWI Z
     
+    SET A, 3
+    SET B, [border_color]
+    HWI Z
+    
     SET PC, POP
     
     :keyboard_init
@@ -51,7 +55,7 @@ IFE Z, 0
     :clock_init
     SET [clock_address], Z
     SET PC, POP
-    
+
 :printf
     SET B, [video_mem]
 
@@ -74,6 +78,9 @@ DAT 0x0000
 
 :video_mem
 DAT 0x8000
+:border_color
+DAT 0x8
+
 :color
 DAT 0xF000
 
