@@ -2,17 +2,18 @@
 ; Title:   printf.dasm
 ; Author:  Quentin   
 ; Date:    17/05/2012
-; Version: 0.2
+; Version: 0.3
 ; ----------------------------------------
 ; ChangeLog:
 ; # version 0.1
 ; - Draw the string on display
 ; # version 0.2
 ; - X, Y position
+; # version 0.3
+; - cursor
 ; ----------------------------------------
 ; Todo:
 ; - /n
-, - cursor
 ; ----------------------------------------
 
 :printf
@@ -29,15 +30,21 @@
     :next_char
     SET C, [A]
     IFE C, 0
-        SET PC, POP
+        JSR cursor
     BOR C, [color]
     SET [B], C
     ADD B, 1
     ADD A, 1
     SET PC, next_char
     
+    :cursor
+    SET [B], [cursor]
+    SET PC, POP
+    
 :color
-0xF000
+DAT 0xF000
+:cursor
+DAT 0xF09F
 
 :hello_world_string
 DAT "Hello, World!", 0
