@@ -59,8 +59,7 @@ IFE Z, 0
     SET PC, POP
 
 :printf
-    SET B, [video_mem]
-    JSR set_position
+SET B, [video_mem]
     
     :set_position
         :position_y
@@ -72,12 +71,16 @@ IFE Z, 0
     :next_char
     SET C, [A]
     IFE C, 0
-        SET PC, POP
+        SET PC, draw_cursor
     BOR C, [color]
     SET [B], C
     ADD B, 1
     ADD A, 1
     SET PC, next_char
+    
+    :draw_cursor
+    SET [B], [cursor]
+    SET PC, POP
 
 :display_address
 DAT 0x0000
@@ -93,6 +96,8 @@ DAT 0x8
 
 :color
 DAT 0xF000
+:cursor
+DAT 0xF09F
 
 :hello_world_string
 DAT "Hello, World!", 0

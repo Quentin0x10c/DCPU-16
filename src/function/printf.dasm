@@ -30,14 +30,14 @@
     :next_char
     SET C, [A]
     IFE C, 0
-        JSR cursor
+        SET PC, draw_cursor
     BOR C, [color]
     SET [B], C
     ADD B, 1
     ADD A, 1
     SET PC, next_char
     
-    :cursor
+    :draw_cursor
     SET [B], [cursor]
     SET PC, POP
     
