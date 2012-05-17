@@ -25,5 +25,8 @@
     ADD A, 1
     SET PC, next_char
     
+:color
+0xF000
+
 :hello_world_string
 DAT "Hello, World!", 0
