@@ -1,0 +1,8 @@
+:clear_screen
+SET B, [video_mem]
+    :clear_screen_loop
+    SET [B], 0x0020
+    IFE B, [video_mem_end]
+        SET PC, POP
+    ADD B, 1
+    SET PC, clear_screen_loop
