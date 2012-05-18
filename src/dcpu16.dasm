@@ -2,6 +2,7 @@
     JSR main
     
 :main
+JSR clear_screen
 SET A, hello_world_string
 SET X, 5
 SET Y, 4
@@ -58,6 +59,15 @@ IFE Z, 0
     SET [clock_address], Z
     SET PC, POP
 
+:clear_screen
+SET B, [video_mem]
+    :clear_screen_loop
+    SET [B], 0x0020
+    IFE B, [video_mem_end]
+        SET PC, POP
+    ADD B, 1
+    SET PC, clear_screen_loop
+
 :printf
 SET B, [video_mem]
     
@@ -91,6 +101,8 @@ DAT 0x0000
 
 :video_mem
 DAT 0x8000
+:video_mem_end
+DAT 0x8180
 :border_color
 DAT 0x8
 
